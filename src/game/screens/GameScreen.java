@@ -1,7 +1,7 @@
 package game.screens;
 
-import game.Map;
-import game.MapObject;
+import game.world.Map;
+import game.world.MapObject;
 import java.io.IOException;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderWindow;

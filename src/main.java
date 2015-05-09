@@ -10,7 +10,7 @@ import org.jsfml.window.VideoMode;
 public class main {
 
     public static void main(String[] args) throws  IOException {
-        RenderWindow window = new RenderWindow(new VideoMode(800,800),"HI");
+        RenderWindow window = new RenderWindow(new VideoMode(800,600),"HI");
         Screen screen = new StartScreen(window);
         while(window.isOpen()){
             screen = screen.update();

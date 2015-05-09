@@ -37,6 +37,9 @@ public class StartScreen extends Screen {
     @Override
     public Screen update() {
         window.clear();
+        
+        //Ideally, the stuff hear should be a start screen with a nice background
+        //but I suck at aesthetics
         Text output = new Text();
         output.setFont(font);
         output.setString(out);
