@@ -5,6 +5,7 @@ import org.jsfml.graphics.Sprite;
 public class MapObject {
 
     public Sprite texture;
+    //The xpos stuff refers to the position on the map, not on the screen
     public float xPos;
     public float yPos;
     public int sizex;
@@ -16,15 +17,17 @@ public class MapObject {
         this.sizex = sizex;
         this.texture = texture;
         this.sizey = sizey;
-        texture.setPosition(posx, posy);
+        xPos = 0;
+        yPos = 0;
         remove = false;
         display = true;
         resize();
     }
-    
-    public void update(){
-        
+
+    public void update() {
+
     }
+
     public void setSize(int sizex, int sizey) {
         this.sizex = sizex;
         this.sizey = sizey;

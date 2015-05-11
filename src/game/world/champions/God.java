@@ -7,8 +7,9 @@ public class God extends Player{
 
     public God(Sprite texture, int sizex, int sizey, float posx, float posy) {
         super(texture, sizex, sizey, posx, posy);
+        speed = 1;
     }
-
+    
     @Override
     public void useQ() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

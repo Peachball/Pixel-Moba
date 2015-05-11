@@ -10,15 +10,16 @@ public class Map {
 
     ArrayList<MapObject> sprites;
     Texture background;
-    int sizex;
-    int sizey;
-    int xPos;
-    int yPos;
+    public int sizex;
+    public int sizey;
+    public int xPos;
+    public int yPos;
     RenderWindow frame;
 
     /**
      * For testing purposes only
      *
+     * @param window
      * @deprecated
      */
     public Map(RenderWindow window) {
@@ -42,13 +43,19 @@ public class Map {
     public void removeSprite(MapObject object) {
         sprites.remove(object);
     }
-    
-    public void nextIteration(){
-        
+
+    //Shouldn't use this system...maybe use multiple threads later?
+    //Will this be slow...?
+    public void update() {
+        for (MapObject i : sprites) {
+            i.update();
+        }
     }
 
+    /**
+     * Doesn't clear the screen now
+     */
     public void display() {
-        frame.clear();
         Sprite buffer = new Sprite();
         buffer.setTexture(background);
         buffer.setPosition(xPos, yPos);
@@ -64,6 +71,5 @@ public class Map {
             frame.draw(i.texture);
         }
 
-        frame.display();
     }
 }
