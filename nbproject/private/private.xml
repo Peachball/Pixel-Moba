@@ -3,15 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/screens/Frame.java</file>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/screens/DeathScreen.java</file>
             <file>file:/F:/Java%20stuff/PixelMoba/src/game/screens/StartScreen.java</file>
-            <file>file:/F:/Java%20stuff/PixelMoba/src/game/hitboxes/Hitbox.java</file>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/world/bullets/BulletBill.java</file>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/world/bullets/Bullet.java</file>
             <file>file:/F:/Java%20stuff/PixelMoba/src/main.java</file>
             <file>file:/F:/Java%20stuff/PixelMoba/src/game/world/Map.java</file>
-            <file>file:/F:/Java%20stuff/PixelMoba/src/game/screens/MenuScreen.java</file>
-            <file>file:/F:/Java%20stuff/PixelMoba/src/game/world/Bullet.java</file>
             <file>file:/F:/Java%20stuff/PixelMoba/src/game/screens/Screen.java</file>
-            <file>file:/F:/Java%20stuff/PixelMoba/src/game/world/champions/God.java</file>
             <file>file:/F:/Java%20stuff/PixelMoba/src/game/world/MapObject.java</file>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/screens/GameScreen.java</file>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/hitboxes/CircleBox.java</file>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/hitboxes/Hitbox.java</file>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/world/champions/Player.java</file>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/hitboxes/RectangleBox.java</file>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/screens/MenuScreen.java</file>
+            <file>file:/F:/Java%20stuff/PixelMoba/src/game/world/champions/God.java</file>
         </group>
     </open-files>
 </project-private>

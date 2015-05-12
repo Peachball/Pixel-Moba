@@ -1,15 +1,19 @@
 package game.world.bullets;
 
+import game.hitboxes.CircleBox;
 import game.screens.Frame;
+import game.world.MapObject;
 import java.io.IOException;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
+import org.jsfml.system.Vector2i;
 
 public class BulletBill extends Bullet {
 
     public final String DEFAULT_PATH = "bulletbill.png";
     double direction;
     int speed;
+    public MapObject caster;
 
     private void init() throws IOException {
         Texture buffer = Frame.loadImage(DEFAULT_PATH);
@@ -18,6 +22,7 @@ public class BulletBill extends Bullet {
         this.texture = texture;
         setOriginMiddle();
         texture.rotate((float) Math.toDegrees(direction + Math.PI));
+        hitbox = new CircleBox(new Vector2i((int) xPos, (int) yPos), 10);
     }
 
     public BulletBill(int sizex, int sizey, int xPos, int yPos, double direction) throws IOException {
@@ -60,6 +65,7 @@ public class BulletBill extends Bullet {
         if (xPos > map.sizex + 100 || xPos < -20 || yPos > map.sizey + 100 || yPos < -20) {
             remove = true;
         }
+        ((CircleBox)hitbox).origin = new Vector2i((int)xPos,(int)yPos);
     }
 
 }

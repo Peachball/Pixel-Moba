@@ -32,9 +32,19 @@ public class Map {
         background = new Texture();
         sprites = new ArrayList<MapObject>();
     }
+    
+    public Map(RenderWindow window, int xsize, int ysize){
+        xPos = 0;
+        frame = window;
+        sizex = xsize;
+        sizey = ysize;
+        background = new Texture();
+        sprites = new ArrayList<MapObject>();
+    }
+    
 
     public void loadMap(String path) throws IOException {
-        background.loadFromStream(ClassLoader.getSystemResourceAsStream("res/samplemap.png"));
+        background.loadFromStream(ClassLoader.getSystemResourceAsStream("res/" + path));
     }
 
     public void addSprite(MapObject object) {
@@ -71,7 +81,7 @@ public class Map {
             if (!sprites.get(counter).display) {
                 continue;
             }
-            sprites.get(counter).texture.setPosition(sprites.get(counter).xPos - xPos, sprites.get(counter).yPos - yPos);
+            sprites.get(counter).texture.setPosition(sprites.get(counter).xPos + xPos, sprites.get(counter).yPos + yPos);
             frame.draw(sprites.get(counter).texture);
         }
 

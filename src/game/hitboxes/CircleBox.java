@@ -13,6 +13,11 @@ public class CircleBox extends Hitbox {
         this.a = a;
         this.b = b;
     }
+    
+    public CircleBox(Vector2i origin, int radius){
+        this.origin = origin;
+        this.radius = radius;
+    }
 
     @Override
     public boolean intersectsWith(Hitbox b) {

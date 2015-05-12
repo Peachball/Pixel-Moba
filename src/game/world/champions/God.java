@@ -18,6 +18,12 @@ public class God extends Player {
         Texture buffer = Frame.loadImage(DEFAULT_IMAGE_PATH);
         a.setTexture(buffer);
         this.texture = a;
+        hp = 1000;
+        maxhp = 1000;
+        mana = 1000;
+        maxmana = 1000;
+        hpregen = 10;
+        dmg = 10;
     }
 
     public God() throws IOException {

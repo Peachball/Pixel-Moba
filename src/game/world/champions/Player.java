@@ -13,7 +13,7 @@ public abstract class Player extends MapObject {
     public int speed;
     public int def;
     public int dmg;
-    public int hpregen;
+    public double hpregen;
 
     //To see which direction the champion wants to move
     float xTar;
@@ -72,7 +72,15 @@ public abstract class Player extends MapObject {
         } else {
             angle = Math.atan(y / x);
         }
-        shift((float) Math.cos(angle) * speed, (float) Math.sin(angle) * speed);
+        double shiftx = Math.cos(angle) * speed;
+        double shifty = Math.sin(angle) * speed;
+        if (xPos + shiftx < 0 || xPos + shiftx > map.sizex || yPos + shifty < 0 || yPos + shifty > map.sizey) {
+            return;
+        }
+        shift((float) shiftx, (float) shifty);
+        if (hp < 0) {
+            remove = true;
+        }
     }
 
 }

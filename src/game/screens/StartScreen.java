@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
+import org.jsfml.graphics.View;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.Window;
@@ -37,7 +39,7 @@ public class StartScreen extends Screen {
     @Override
     public Screen update() {
         window.clear();
-        
+
         //Ideally, the stuff hear should be a start screen with a nice background
         //but I suck at aesthetics
         Text output = new Text();
@@ -80,6 +82,9 @@ public class StartScreen extends Screen {
                             }
                         }
                     }
+                    break;
+                case RESIZED:
+                    window.setView(new View(new FloatRect(0, 0, window.getSize().x, window.getSize().y)));
                     break;
 
             }
