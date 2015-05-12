@@ -2,7 +2,7 @@ package game.world;
 
 import org.jsfml.graphics.Sprite;
 
-public class MapObject {
+public abstract class MapObject {
 
     public Sprite texture;
     //The xpos stuff refers to the position on the map, not on the screen
@@ -12,6 +12,7 @@ public class MapObject {
     public int sizey;
     public boolean remove;
     public boolean display;
+    public Map map;
 
     public MapObject(Sprite texture, int sizex, int sizey, float posx, float posy) {
         this.sizex = sizex;
@@ -23,7 +24,20 @@ public class MapObject {
         display = true;
         resize();
     }
+    
+    public MapObject(){
+        sizex = 0;
+        sizey = 0;
+        display = false;
+        remove = false;
+        xPos= 0;
+        yPos = 0;
+    }
 
+    public void intersectsWith(MapObject object){
+        
+    }
+    
     public void update() {
 
     }

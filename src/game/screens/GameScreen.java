@@ -1,12 +1,15 @@
 package game.screens;
 
 import game.world.Map;
-import game.world.Player;
+import game.world.champions.Player;
 import game.world.champions.God;
 import java.io.IOException;
+import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
+import org.jsfml.graphics.View;
+import org.jsfml.window.Mouse;
 import org.jsfml.window.event.Event;
 import static org.jsfml.window.event.Event.Type.CLOSED;
 import static org.jsfml.window.event.Event.Type.KEY_PRESSED;
@@ -32,7 +35,7 @@ public class GameScreen extends Screen {
         Texture buffer = Frame.loadImage("ninja.jpg");
         Sprite player2 = new Sprite();
         player2.setTexture(buffer);
-        player = new God(player2, 20, 20, 0, 0);
+        player = new God();
         player.setOriginMiddle();
         map.addSprite(player);
     }
@@ -57,6 +60,9 @@ public class GameScreen extends Screen {
                         case ESCAPE:
                             window.close();
                             break;
+                        case Q:
+                            player.useQ(Mouse.getPosition(window).x - map.xPos, Mouse.getPosition(window).y - map.yPos);
+                            break;
                     }
                     break;
                 case MOUSE_BUTTON_PRESSED:
@@ -65,6 +71,8 @@ public class GameScreen extends Screen {
                             player.setTarget(buffer.asMouseButtonEvent().position.x - map.xPos, buffer.asMouseButtonEvent().position.y - map.yPos);
                             break;
                     }
+                case RESIZED:
+                    window.setView(new View(new FloatRect(0, 0, window.getSize().x, window.getSize().y)));
 
             }
         }

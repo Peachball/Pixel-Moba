@@ -2,13 +2,14 @@ package game.world;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
 public class Map {
 
-    ArrayList<MapObject> sprites;
+    volatile ArrayList<MapObject> sprites;
     Texture background;
     public int sizex;
     public int sizey;
@@ -38,6 +39,7 @@ public class Map {
 
     public void addSprite(MapObject object) {
         sprites.add(object);
+        object.map = this;
     }
 
     public void removeSprite(MapObject object) {
@@ -60,16 +62,27 @@ public class Map {
         buffer.setTexture(background);
         buffer.setPosition(xPos, yPos);
         frame.draw(buffer);
-        for (MapObject i : sprites) {
-            if (i.remove) {
-                sprites.remove(i);
-            }
-            if (!i.display) {
+        for (int counter = 0; counter < sprites.size(); counter++) {
+            if (sprites.get(counter).remove) {
+                sprites.remove(counter);
+                counter--;
                 continue;
             }
-            i.texture.setPosition(i.xPos - xPos, i.yPos - yPos);
-            frame.draw(i.texture);
+            if (!sprites.get(counter).display) {
+                continue;
+            }
+            sprites.get(counter).texture.setPosition(sprites.get(counter).xPos - xPos, sprites.get(counter).yPos - yPos);
+            frame.draw(sprites.get(counter).texture);
         }
 
     }
+}
+
+class MapObjectComparator implements Comparator<MapObject> {
+
+    @Override
+    public int compare(MapObject o1, MapObject o2) {
+        return Math.round(o1.xPos - o2.xPos);
+    }
+
 }
