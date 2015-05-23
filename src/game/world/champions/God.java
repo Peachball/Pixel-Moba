@@ -12,6 +12,7 @@ public class God extends Player {
     public final String DEFAULT_IMAGE_PATH = "ninja.jpg";
     public final int DEFAULT_SIZEX = 20;
     public final int DEFAULT_SIZEY = 20;
+    public double reload;
 
     private void init() throws IOException {
         Sprite a = new Sprite();
@@ -50,7 +51,7 @@ public class God extends Player {
 
     @Override
     public void useE(int x, int y) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.speed += 1;
     }
 
     @Override
@@ -60,7 +61,10 @@ public class God extends Player {
 
     @Override
     public void useD(int x, int y) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.xPos = x + 1;
+        this.yPos = y + 1;
+        this.xTar = x;
+        this.yTar = y;
     }
 
     @Override
