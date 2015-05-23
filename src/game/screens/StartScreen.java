@@ -53,6 +53,7 @@ public class StartScreen extends Screen {
         sprite.setTexture(ninja);
         window.draw(sprite);
         window.display();
+        
         //Key input reading loop
         Event buffer;
         while ((buffer = window.pollEvent()) != null) {

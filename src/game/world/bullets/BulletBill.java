@@ -3,6 +3,7 @@ package game.world.bullets;
 import game.hitboxes.CircleBox;
 import game.screens.Frame;
 import game.world.MapObject;
+import game.world.champions.Player;
 import java.io.IOException;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
@@ -13,7 +14,7 @@ public class BulletBill extends Bullet {
     public final String DEFAULT_PATH = "bulletbill.png";
     double direction;
     int speed;
-    public MapObject caster;
+    private Player source;
 
     private void init() throws IOException {
         Texture buffer = Frame.loadImage(DEFAULT_PATH);
@@ -25,7 +26,7 @@ public class BulletBill extends Bullet {
         hitbox = new CircleBox(new Vector2i((int) xPos, (int) yPos), 10);
     }
 
-    public BulletBill(int sizex, int sizey, int xPos, int yPos, double direction) throws IOException {
+    public BulletBill(int sizex, int sizey, int xPos, int yPos, double direction, Player source) throws IOException {
         super();
 
         this.sizex = sizex;
@@ -36,6 +37,7 @@ public class BulletBill extends Bullet {
         this.direction = direction;
         speed = 1;
         init();
+        this.source = source;
     }
 
     public BulletBill(int sizex, int sizey, int xPos, int yPos, int xTar, int yTar) throws IOException {
@@ -65,7 +67,15 @@ public class BulletBill extends Bullet {
         if (xPos > map.sizex + 100 || xPos < -20 || yPos > map.sizey + 100 || yPos < -20) {
             remove = true;
         }
-        ((CircleBox)hitbox).origin = new Vector2i((int)xPos,(int)yPos);
+        ((CircleBox) hitbox).origin = new Vector2i((int) xPos, (int) yPos);
+    }
+    
+    @Override
+    public void intersectsWith(MapObject object){
+        if(object instanceof Player){
+            Player buffer = (Player) object;
+            buffer.hp -= 10;
+        }
     }
 
 }

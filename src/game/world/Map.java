@@ -1,9 +1,11 @@
 package game.world;
 
+import game.world.champions.Player;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
@@ -18,6 +20,7 @@ public class Map implements Serializable {
     public int xPos;
     public int yPos;
     RenderWindow frame;
+    private Texture green;
 
     /**
      * For testing purposes only
@@ -25,7 +28,7 @@ public class Map implements Serializable {
      * @param window
      * @deprecated
      */
-    public Map(RenderWindow window) {
+    public Map(RenderWindow window) throws IOException {
         frame = window;
         sizex = frame.getSize().x;
         sizey = frame.getSize().y;
@@ -33,15 +36,19 @@ public class Map implements Serializable {
         yPos = 0;
         background = new Texture();
         sprites = new ArrayList<MapObject>();
+        green = new Texture();
+        green.loadFromStream(ClassLoader.getSystemResourceAsStream("res/healthbar.png"));
     }
 
-    public Map(RenderWindow window, int xsize, int ysize) {
+    public Map(RenderWindow window, int xsize, int ysize) throws IOException {
         xPos = 0;
         frame = window;
         sizex = xsize;
         sizey = ysize;
         background = new Texture();
         sprites = new ArrayList<MapObject>();
+        green = new Texture();
+        green.loadFromStream(ClassLoader.getSystemResourceAsStream("res/healthbar.png"));
     }
 
     public void loadMap(String path) throws IOException {
@@ -69,7 +76,7 @@ public class Map implements Serializable {
     /**
      * Doesn't clear the screen now
      */
-    public void display() {
+    public void display() throws IOException {
         Sprite buffer = new Sprite();
         buffer.setTexture(background);
         buffer.setTextureRect(new IntRect(0, 0, sizex, sizey));
@@ -84,14 +91,26 @@ public class Map implements Serializable {
             if (!sprites.get(counter).display) {
                 continue;
             }
+            if (sprites.get(counter) instanceof Player) {
+                float x = sprites.get(counter).xPos;
+                float y = sprites.get(counter).yPos;
+                Player player = (Player) sprites.get(counter);
+                Sprite healthBar = new Sprite();
+
+                healthBar.setTexture(green);
+                healthBar.setColor(Color.GREEN);
+                healthBar.setPosition(player.xPos - (float) (player.sizex / 2.0) + xPos, player.yPos - player.sizey + yPos);
+                healthBar.setTextureRect(new IntRect(0, 0, (int) (player.hp * 1.0 / player.maxhp * player.sizex), 10));
+                frame.draw(healthBar);
+            }
             sprites.get(counter).texture.setPosition(sprites.get(counter).xPos + xPos, sprites.get(counter).yPos + yPos);
             frame.draw(sprites.get(counter).texture);
         }
     }
 
     public void center(MapObject player) {
-        xPos =-(int) player.xPos;
-        yPos = -(int)player.yPos;
+        xPos = -(int) player.xPos;
+        yPos = -(int) player.yPos;
     }
 }
 
