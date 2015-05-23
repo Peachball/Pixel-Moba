@@ -12,6 +12,7 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.View;
 import org.jsfml.window.Mouse;
 import org.jsfml.window.VideoMode;
+import org.jsfml.window.Window;
 import org.jsfml.window.event.Event;
 import static org.jsfml.window.event.Event.Type.CLOSED;
 import static org.jsfml.window.event.Event.Type.KEY_PRESSED;
@@ -68,8 +69,16 @@ public class GameScreen extends Screen {
                             player.useQ(Mouse.getPosition(window).x -map.xPos, Mouse.getPosition(window).y- map.yPos);
                             break;
                         case SPACE:
-                            map.xPos = 0;
-                            map.yPos =0;
+                            map.center(player);
+                            map.xPos += window.getSize().x/2;
+                            map.yPos += window.getSize().y/2;
+                            break;
+                        case A:
+                            window.create(VideoMode.getFullscreenModes()[0], "EYY",Window.FULLSCREEN);
+                            break;
+                        case B:
+                            window.create(new VideoMode(800,600),"SMALL");
+                            break;
                     }
                     break;
                 case MOUSE_BUTTON_PRESSED:
@@ -93,7 +102,7 @@ public class GameScreen extends Screen {
         if (Mouse.getPosition(window).y <= 0) {
             map.yPos++;
         }
-        if (Mouse.getPosition(window).y >= window.getSize().y) {
+        if (Mouse.getPosition(window).y >= window.getSize().y-10) {
             map.yPos--;
         }
         return this;

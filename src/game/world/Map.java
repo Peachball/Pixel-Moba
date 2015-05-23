@@ -1,13 +1,15 @@
 package game.world;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 
-public class Map {
+public class Map implements Serializable {
 
     volatile ArrayList<MapObject> sprites;
     Texture background;
@@ -32,8 +34,8 @@ public class Map {
         background = new Texture();
         sprites = new ArrayList<MapObject>();
     }
-    
-    public Map(RenderWindow window, int xsize, int ysize){
+
+    public Map(RenderWindow window, int xsize, int ysize) {
         xPos = 0;
         frame = window;
         sizex = xsize;
@@ -41,10 +43,10 @@ public class Map {
         background = new Texture();
         sprites = new ArrayList<MapObject>();
     }
-    
 
     public void loadMap(String path) throws IOException {
         background.loadFromStream(ClassLoader.getSystemResourceAsStream("res/" + path));
+        background.setRepeated(true);
     }
 
     public void addSprite(MapObject object) {
@@ -70,6 +72,7 @@ public class Map {
     public void display() {
         Sprite buffer = new Sprite();
         buffer.setTexture(background);
+        buffer.setTextureRect(new IntRect(0, 0, sizex, sizey));
         buffer.setPosition(xPos, yPos);
         frame.draw(buffer);
         for (int counter = 0; counter < sprites.size(); counter++) {
@@ -84,7 +87,11 @@ public class Map {
             sprites.get(counter).texture.setPosition(sprites.get(counter).xPos + xPos, sprites.get(counter).yPos + yPos);
             frame.draw(sprites.get(counter).texture);
         }
+    }
 
+    public void center(MapObject player) {
+        xPos =-(int) player.xPos;
+        yPos = -(int)player.yPos;
     }
 }
 

@@ -1,8 +1,9 @@
 package game.world;
 
+import java.io.Serializable;
 import org.jsfml.graphics.Sprite;
 
-public abstract class MapObject {
+public abstract class MapObject implements Serializable {
 
     public Sprite texture;
     //The xpos stuff refers to the position on the map, not on the screen
