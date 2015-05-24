@@ -74,7 +74,7 @@ public class God extends Player {
            {
                io.printStackTrace();
            }
-           cooldownW = System.currentTimeMillis();.
+           cooldownW = System.currentTimeMillis();
         }
     }
     @Override

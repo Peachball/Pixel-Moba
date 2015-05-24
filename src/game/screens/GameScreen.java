@@ -81,6 +81,9 @@ public class GameScreen extends Screen {
                         case D:
                             player.useD(Mouse.getPosition(window).x -map.xPos, Mouse.getPosition(window).y- map.yPos);
                             break;
+                        case R:
+                            player.useR(Mouse.getPosition(window).x -map.xPos, Mouse.getPosition(window).y- map.yPos);
+                            break;
                         case SPACE:
                             map.center(player);
                             map.xPos += window.getSize().x/2;
