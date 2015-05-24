@@ -21,22 +21,31 @@ public class Client implements Runnable {
         in = new ObjectInputStream(socket.getInputStream());
         inputLock = new Object();
         input = new LinkedList<Object>();
+        start();
     }
-    public Client(Socket socket) throws IOException{
+
+    public Client(Socket socket) throws IOException {
         this.socket = socket;
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
         inputLock = new Object();
         input = new LinkedList<Object>();
+        start();
     }
+
+    public void start() {
+        new Thread(this).start();
+    }
+
     /**
-     * Returns the most recent message in the list of messages
-     * Will return null if no messages are in list
-     * @return 
+     * Returns the most recent message in the list of messages Will return null
+     * if no messages are in list
+     *
+     * @return
      */
-    public Object readMessage(){
-        synchronized(inputLock){
-            if(!input.isEmpty()){
+    public Object readMessage() {
+        synchronized (inputLock) {
+            if (!input.isEmpty()) {
                 return input.remove(0);
             }
         }
@@ -51,6 +60,7 @@ public class Client implements Runnable {
                     input.add(in.readObject());
                 } catch (IOException ex) {
                     ex.printStackTrace();
+                    System.exit(0);
                 } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
                 }

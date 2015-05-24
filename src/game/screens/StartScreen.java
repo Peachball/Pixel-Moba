@@ -1,5 +1,6 @@
 package game.screens;
 
+import game.world.networking.Server;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -88,8 +89,22 @@ public class StartScreen extends Screen {
                             System.out.println("enter server ip");
                             Scanner in = new Scanner(System.in);
                             String ip = in.nextLine();
+                            try {
+                                return new TestScreen(window, ip);
+                            } catch (IOException ex) {
+                                Logger.getLogger(StartScreen.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                             break;
+                        case G:
+                            try {
+                                Server test = new Server(1123);
+                                test.start();
+                                System.out.println("Server started");
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
 
+                            break;
                     }
                     break;
                 case RESIZED:
