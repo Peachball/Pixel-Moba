@@ -4,6 +4,8 @@ import game.world.Map;
 import game.world.champions.Player;
 import game.world.champions.God;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.RenderWindow;
@@ -22,6 +24,7 @@ public class GameScreen extends Screen {
 
     Map map;
     Player player;
+    Player ai;
 
     /**
      * For testing purposes only
@@ -35,13 +38,13 @@ public class GameScreen extends Screen {
         map = new Map(window, 2000, 2000);
 
         //Build a sample sprite
-        Texture buffer = Frame.loadImage("ninja.jpg");
-        Sprite player2 = new Sprite();
-        player2.setTexture(buffer);
         player = new God();
         player.setOriginMiddle();
         map.addSprite(player);
         map.loadMap("samplemap.png");
+        ai = new God();
+        ai.setOriginMiddle();
+        map.addSprite(ai);
     }
 
     @Override
@@ -49,7 +52,11 @@ public class GameScreen extends Screen {
         map.update();
         window.clear(Color.WHITE);
         
-        map.display();
+        try {
+            map.display();
+        } catch (IOException ex) {
+            Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         window.display();
         

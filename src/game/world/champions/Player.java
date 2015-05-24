@@ -1,9 +1,14 @@
 package game.world.champions;
 
+import game.hitboxes.CircleBox;
+import game.hitboxes.Hitbox;
 import game.world.MapObject;
 import org.jsfml.graphics.Sprite;
+import org.jsfml.system.Vector2f;
 
 public abstract class Player extends MapObject {
+
+    int size;
 
     //List some stats
     public int hp;
@@ -19,7 +24,10 @@ public abstract class Player extends MapObject {
     float xTar;
     float yTar;
 
+    public Hitbox hitbox;
+
     private void init() {
+        size = 10;
         hp = 0;
         maxhp = 0;
         mana = 0;
@@ -31,6 +39,7 @@ public abstract class Player extends MapObject {
         yTar = 10;
         remove = false;
         display = true;
+        hitbox = new CircleBox(new Vector2f(xPos, yPos), 10);
     }
 
     public Player(Sprite texture, int sizex, int sizey, float posx, float posy) {
@@ -64,6 +73,11 @@ public abstract class Player extends MapObject {
 
     @Override
     public void update() {
+        if (Math.sqrt(Math.pow(xTar - xPos, 2) + Math.pow(yTar - yPos, 2)) < speed) {
+            xPos = xTar;
+            yPos = yTar;
+            return;
+        }
         float x = xTar - xPos;
         float y = yTar - yPos;
         double angle;

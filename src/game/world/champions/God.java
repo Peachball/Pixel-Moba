@@ -38,7 +38,7 @@ public class God extends Player {
     @Override
     public void useQ(int x, int y) {
         try {
-            map.addSprite(new BulletBill(20, 20, (int) xPos, (int) yPos, x, y));
+            map.addSprite(new BulletBill(20, 20, (int) xPos, (int) yPos, x, y, this));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class God extends Player {
 
     @Override
     public void useE(int x, int y) {
-        this.speed += 1;
+        this.speed++;
     }
 
     @Override
