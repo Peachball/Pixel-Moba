@@ -1,6 +1,7 @@
 package game.screens;
 
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jsfml.graphics.Color;
@@ -53,7 +54,7 @@ public class StartScreen extends Screen {
         sprite.setTexture(ninja);
         window.draw(sprite);
         window.display();
-        
+
         //Key input reading loop
         Event buffer;
         while ((buffer = window.pollEvent()) != null) {
@@ -75,13 +76,20 @@ public class StartScreen extends Screen {
                         case D:
                             window.create(new VideoMode(800, 800), out, Window.DEFAULT);
                             break;
-                        case E: {
+                        case E:
                             try {
                                 return new GameScreen(window);
                             } catch (IOException ex) {
                                 Logger.getLogger(StartScreen.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        }
+                            break;
+                        case F:
+                            //Add connect to server thing
+                            System.out.println("enter server ip");
+                            Scanner in = new Scanner(System.in);
+                            String ip = in.nextLine();
+                            break;
+
                     }
                     break;
                 case RESIZED:

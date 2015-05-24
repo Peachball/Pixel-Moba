@@ -8,6 +8,8 @@ import org.jsfml.system.Vector2f;
 
 public abstract class Player extends MapObject {
 
+    double id;
+    
     int size;
 
     //List some stats
@@ -40,6 +42,7 @@ public abstract class Player extends MapObject {
         remove = false;
         display = true;
         hitbox = new CircleBox(new Vector2f(xPos, yPos), 10);
+        id = Math.random() * Double.MAX_VALUE;
     }
 
     public Player(Sprite texture, int sizex, int sizey, float posx, float posy) {

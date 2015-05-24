@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.Font;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
+import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
 
 public class Map implements Serializable {
@@ -24,6 +26,25 @@ public class Map implements Serializable {
     public int yPos;
     RenderWindow frame;
     private Texture green;
+    private Text text;
+
+    protected void init() throws IOException {
+
+        xPos = 0;
+        yPos = 0;
+        background = new Texture();
+        sprites = new ArrayList<MapObject>();
+        green = new Texture();
+        green.loadFromStream(ClassLoader.getSystemResourceAsStream("res/healthbar.png"));
+        text = new Text();
+        Font font = new Font();
+        font.loadFromStream(ClassLoader.getSystemResourceAsStream("res/Time Roman.ttf"));
+        text.setFont(font);
+    }
+
+    public void linkWindow(RenderWindow window) {
+        frame = window;
+    }
 
     /**
      * For testing purposes only
@@ -32,26 +53,22 @@ public class Map implements Serializable {
      * @deprecated
      */
     public Map(RenderWindow window) throws IOException {
-        frame = window;
-        sizex = frame.getSize().x;
-        sizey = frame.getSize().y;
-        xPos = 0;
-        yPos = 0;
-        background = new Texture();
-        sprites = new ArrayList<MapObject>();
-        green = new Texture();
-        green.loadFromStream(ClassLoader.getSystemResourceAsStream("res/healthbar.png"));
+        init();
+        if (window == null) {
+            sizex = 1000;
+            sizey = 1000;
+        } else {
+            frame = window;
+            sizex = frame.getSize().x;
+            sizey = frame.getSize().y;
+        }
     }
 
     public Map(RenderWindow window, int xsize, int ysize) throws IOException {
-        xPos = 0;
+        init();
         frame = window;
-        sizex = xsize;
-        sizey = ysize;
-        background = new Texture();
-        sprites = new ArrayList<MapObject>();
-        green = new Texture();
-        green.loadFromStream(ClassLoader.getSystemResourceAsStream("res/healthbar.png"));
+        this.sizex = xsize;
+        this.sizey = ysize;
     }
 
     public void loadMap(String path) throws IOException {
@@ -86,10 +103,10 @@ public class Map implements Serializable {
                 continue;
             }
             for (MapObject i2 : sprites) {
-                if (i instanceof Bullet) {
-                    buffer2 = ((Bullet) i).hitbox;
-                } else if (i instanceof Player) {
-                    buffer2 = ((Player) i).hitbox;
+                if (i2 instanceof Bullet) {
+                    buffer2 = ((Bullet) i2).hitbox;
+                } else if (i2 instanceof Player) {
+                    buffer2 = ((Player) i2).hitbox;
                 } else {
                     continue;
                 }
@@ -100,9 +117,6 @@ public class Map implements Serializable {
         }
     }
 
-    /**
-     * Doesn't clear the screen now
-     */
     public void display() throws IOException {
         Sprite buffer = new Sprite();
         buffer.setTexture(background);
@@ -110,7 +124,7 @@ public class Map implements Serializable {
         buffer.setPosition(xPos, yPos);
         frame.draw(buffer);
         for (int counter = 0; counter < sprites.size(); counter++) {
-            if (sprites.get(counter).remove) { 
+            if (sprites.get(counter).remove) {
                 sprites.remove(counter);
                 counter--;
                 continue;
@@ -127,8 +141,9 @@ public class Map implements Serializable {
                 healthBar.setTexture(green);
                 healthBar.setColor(Color.GREEN);
                 healthBar.setPosition(player.xPos - (float) (player.sizex / 2.0) + xPos, player.yPos - player.sizey + yPos);
-                healthBar.setTextureRect(new IntRect(0, 0, (int) (player.hp * 1.0 / player.maxhp * player.sizex), 10));
+                healthBar.setTextureRect(new IntRect(0, 0, (int) (player.hp * 1.0 / player.maxhp * player.sizex), 5));
                 frame.draw(healthBar);
+                text.setString("GOD IS OP");
             }
             sprites.get(counter).texture.setPosition(sprites.get(counter).xPos + xPos, sprites.get(counter).yPos + yPos);
             frame.draw(sprites.get(counter).texture);
