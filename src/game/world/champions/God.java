@@ -61,10 +61,27 @@ public class God extends Player {
 
     @Override
     public void useD(int x, int y) {
-        this.xPos = x + 1;
-        this.yPos = y + 1;
-        this.xTar = x;
-        this.yTar = y;
+        float a = this.xPos;
+        float b = this.yPos;
+        float distsq = (x - a)*(x - a) + (y - b)*(y - b);
+        double dist = Math.sqrt(distsq);
+        if(dist < 200)
+        {
+        this.xPos = x;
+        this.yPos = y;
+        this.xTar = x + 1;
+        this.yTar = y + 1;
+        }
+        else
+        {
+            double factor = 200 / dist;
+            double alterX  = (x - a) * factor;
+            double alterY = (y - b) * factor;
+            this.xPos = (float)(a + alterX);
+            this.yPos = (float)(b + alterY);
+            this.xTar = this.xPos + 1;
+            this.yTar = this.yPos + 1;
+        }
     }
 
     @Override

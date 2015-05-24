@@ -86,20 +86,19 @@ public class Map implements Serializable {
                 continue;
             }
             for (MapObject i2 : sprites) {
-                if (i instanceof Bullet) {
+                if (i2 instanceof Bullet) {
                     buffer2 = ((Bullet) i).hitbox;
-                } else if (i instanceof Player) {
-                    buffer2 = ((Player) i).hitbox;
+                } else if (i2 instanceof Player) {
+                    buffer2 = ((Player) i2).hitbox;
                 } else {
                     continue;
                 }
                 if (buffer.intersectsWith(buffer2)) {
                     i.intersectsWith(i2);
-                }
             }
         }
     }
-
+}
     /**
      * Doesn't clear the screen now
      */
