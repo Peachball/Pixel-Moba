@@ -107,11 +107,10 @@ public class Map implements Serializable {
                 }
                 if (buffer.intersectsWith(buffer2)) {
                     i.intersectsWith(i2);
-                }
             }
         }
     }
-
+}
     /**
      * Doesn't clear the screen now
      */
