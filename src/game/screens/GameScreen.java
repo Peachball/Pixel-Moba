@@ -52,11 +52,7 @@ public class GameScreen extends Screen {
         map.update();
         window.clear(Color.WHITE);
         
-        try {
             map.display();
-        } catch (IOException ex) {
-            Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         window.display();
         

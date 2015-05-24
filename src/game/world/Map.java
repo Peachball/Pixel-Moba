@@ -26,7 +26,6 @@ public class Map implements Serializable {
     public int yPos;
     RenderWindow frame;
     private Texture green;
-    private Text text;
 
     protected void init() throws IOException {
 
@@ -36,10 +35,6 @@ public class Map implements Serializable {
         sprites = new ArrayList<MapObject>();
         green = new Texture();
         green.loadFromStream(ClassLoader.getSystemResourceAsStream("res/healthbar.png"));
-        text = new Text();
-        Font font = new Font();
-        font.loadFromStream(ClassLoader.getSystemResourceAsStream("res/Time Roman.ttf"));
-        text.setFont(font);
     }
 
     public void linkWindow(RenderWindow window) {
@@ -119,7 +114,7 @@ public class Map implements Serializable {
     /**
      * Doesn't clear the screen now
      */
-    public void display() throws IOException {
+    public void display() {
         Sprite buffer = new Sprite();
         buffer.setTexture(background);
         buffer.setTextureRect(new IntRect(0, 0, sizex, sizey));
@@ -145,7 +140,6 @@ public class Map implements Serializable {
                 healthBar.setPosition(player.xPos - (float) (player.sizex / 2.0) + xPos, player.yPos - player.sizey + yPos);
                 healthBar.setTextureRect(new IntRect(0, 0, (int) (player.hp * 1.0 / player.maxhp * player.sizex), 5));
                 frame.draw(healthBar);
-                text.setString("GOD IS OP");
             }
             sprites.get(counter).texture.setPosition(sprites.get(counter).xPos + xPos, sprites.get(counter).yPos + yPos);
             frame.draw(sprites.get(counter).texture);

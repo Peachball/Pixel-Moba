@@ -1,7 +1,6 @@
 package game.world.networking;
 
 import game.world.Map;
-import game.world.champions.Player;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -9,8 +8,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Server {
 
@@ -18,17 +15,48 @@ public class Server {
     ObjectOutputStream output;
     List<Client> clients;
     Map map;
+    List<Object> requests;
 
     public Server(int port) throws IOException {
         server = new ServerSocket(port);
         clients = Collections.synchronizedList(new ArrayList<Client>());
         map = new Map(null);
+        map.loadMap("samplemap.png");
+        requests = Collections.synchronizedList(new ArrayList<Object>());
     }
 
     public void start() {
         new Thread(new ClientAccepter(clients, server)).start();
         new Thread(new BroadcastMap(map, clients)).start();
     }
+}
+
+class PlayerUpdater implements Runnable {
+
+    List<Client> clients;
+    List<Object> requests;
+
+    public PlayerUpdater(List<Client> clients, List<Object> requests) {
+        this.clients = clients;
+        this.requests = requests;
+    }
+
+    @Override
+    public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            synchronized (clients) {
+                for (int counter = 0; counter < clients.size(); counter++) {
+                    Object buffer = clients.get(counter).readMessage();
+                    if(buffer != null && buffer instanceof Request){
+                        synchronized(requests){
+                            requests.add(buffer);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 class BroadcastMap implements Runnable {
@@ -48,6 +76,7 @@ class BroadcastMap implements Runnable {
                 for (Client i : clients) {
                     try {
                         i.out.writeObject(map);
+                        i.out.flush();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -74,13 +103,8 @@ class ClientAccepter implements Runnable {
             try {
                 Socket buffer = socket.accept();
                 Client buffer2 = new Client(buffer);
-                clients.add(buffer2);
-                Object message = null;
-                while (message == null) {
-                    message = buffer2.readMessage();
-                }
-                if (message instanceof Player) {
-
+                synchronized (clients) {
+                    clients.add(buffer2);
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();

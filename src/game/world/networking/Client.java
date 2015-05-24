@@ -46,7 +46,9 @@ public class Client implements Runnable {
     public Object readMessage() {
         synchronized (inputLock) {
             if (!input.isEmpty()) {
-                return input.remove(0);
+                Object sdf = input.get(0);
+                input.remove(0);
+                return sdf;
             }
         }
         return null;
@@ -55,16 +57,17 @@ public class Client implements Runnable {
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
-            synchronized (inputLock) {
                 try {
-                    input.add(in.readObject());
+                    Object buffer = in.readObject();
+                    synchronized(inputLock){
+                        input.add(buffer);
+                    }
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     System.exit(0);
                 } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
                 }
-            }
         }
     }
 }
