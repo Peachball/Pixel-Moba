@@ -54,7 +54,6 @@ public abstract class Player extends MapObject {
         super();
         init();
     }
-
     public abstract void useQ(int x, int y);
 
     public abstract void useW(int x, int y);

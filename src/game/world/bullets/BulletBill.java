@@ -33,7 +33,6 @@ public class BulletBill extends Bullet {
         this.sizey = sizey;
         this.xPos = xPos;
         this.yPos = yPos;
-
         this.direction = direction;
         speed = 1;
         init();

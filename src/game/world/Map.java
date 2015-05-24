@@ -112,11 +112,13 @@ public class Map implements Serializable {
                 }
                 if (buffer.intersectsWith(buffer2)) {
                     i.intersectsWith(i2);
-                }
             }
         }
     }
-
+}
+    /**
+     * Doesn't clear the screen now
+     */
     public void display() throws IOException {
         Sprite buffer = new Sprite();
         buffer.setTexture(background);
