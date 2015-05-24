@@ -72,4 +72,7 @@ public abstract class MapObject implements Serializable {
         xPos += x;
         yPos += y;
     }
+    public void loadSprite(){
+        
+    }
 }

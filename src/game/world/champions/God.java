@@ -3,6 +3,8 @@ package game.world.champions;
 import game.screens.Frame;
 import game.world.bullets.BulletBill;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.window.Mouse;
@@ -63,22 +65,19 @@ public class God extends Player {
     public void useD(int x, int y) {
         float a = this.xPos;
         float b = this.yPos;
-        float distsq = (x - a)*(x - a) + (y - b)*(y - b);
+        float distsq = (x - a) * (x - a) + (y - b) * (y - b);
         double dist = Math.sqrt(distsq);
-        if(dist < 200)
-        {
-        this.xPos = x;
-        this.yPos = y;
-        this.xTar = x + 1;
-        this.yTar = y + 1;
-        }
-        else
-        {
+        if (dist < 200) {
+            this.xPos = x;
+            this.yPos = y;
+            this.xTar = x + 1;
+            this.yTar = y + 1;
+        } else {
             double factor = 200 / dist;
-            double alterX  = (x - a) * factor;
+            double alterX = (x - a) * factor;
             double alterY = (y - b) * factor;
-            this.xPos = (float)(a + alterX);
-            this.yPos = (float)(b + alterY);
+            this.xPos = (float) (a + alterX);
+            this.yPos = (float) (b + alterY);
             this.xTar = this.xPos + 1;
             this.yTar = this.yPos + 1;
         }
@@ -94,4 +93,17 @@ public class God extends Player {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public void loadSprite() {
+        Sprite a = new Sprite();
+        Texture buffer;
+        try {
+            buffer = Frame.loadImage(DEFAULT_IMAGE_PATH);
+            a.setTexture(buffer);
+            this.texture = a;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+    }
 }

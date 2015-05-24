@@ -1,6 +1,7 @@
 package game.world.networking;
 
 import game.world.Map;
+import game.world.champions.Player;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Server {
+public class Server implements Runnable {
 
     ServerSocket server;
     ObjectOutputStream output;
@@ -28,15 +29,61 @@ public class Server {
     public void start() {
         new Thread(new ClientAccepter(clients, server)).start();
         new Thread(new BroadcastMap(map, clients)).start();
+        new Thread(new RequestDownloader(clients, requests)).start();
+        new Thread(this).start();
+    }
+
+    @Override
+    public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            synchronized (requests) {
+                if (!requests.isEmpty()) {
+                    Object request = requests.get(0);
+                    requests.remove(0);
+                    if (request instanceof Request) {
+                        Player player = map.getByID(((Request) request).id);
+                        if (player != null) {
+                            switch (((Request) request).keycode) {
+                                case 0:
+                                    player.useQ((int) ((Request) request).x, (int) ((Request) request).y);
+                                    break;
+                                case 1:
+                                    player.useW((int) ((Request) request).x, (int) ((Request) request).y);
+                                    break;
+                                case 2:
+                                    player.useE((int) ((Request) request).x, (int) ((Request) request).y);
+                                    break;
+                                case 3:
+                                    player.useR((int) ((Request) request).x, (int) ((Request) request).y);
+                                    break;
+                                case 4:
+                                    player.useD((int) ((Request) request).x, (int) ((Request) request).y);
+                                    break;
+                                case 5:
+                                    player.useF((int) ((Request) request).x, (int) ((Request) request).y);
+                                    break;
+                                case 6:
+                                    player.setTarget((int)((Request)request).x, (int)((Request)request).y);
+                                    break;
+
+                            }
+                        }
+                    }
+                    if (request instanceof Player) {
+                        map.addSprite(((Player) request));
+                    }
+                }
+            }
+        }
     }
 }
 
-class PlayerUpdater implements Runnable {
+class RequestDownloader implements Runnable {
 
     List<Client> clients;
     List<Object> requests;
 
-    public PlayerUpdater(List<Client> clients, List<Object> requests) {
+    public RequestDownloader(List<Client> clients, List<Object> requests) {
         this.clients = clients;
         this.requests = requests;
     }
@@ -47,8 +94,8 @@ class PlayerUpdater implements Runnable {
             synchronized (clients) {
                 for (int counter = 0; counter < clients.size(); counter++) {
                     Object buffer = clients.get(counter).readMessage();
-                    if(buffer != null && buffer instanceof Request){
-                        synchronized(requests){
+                    if (buffer != null) {
+                        synchronized (requests) {
                             requests.add(buffer);
                         }
                     }

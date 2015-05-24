@@ -1,9 +1,10 @@
 package game.hitboxes;
 
+import java.io.Serializable;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
-public class CircleBox extends Hitbox {
+public class CircleBox extends Hitbox implements Serializable {
 
     public int radius;
     public Vector2f origin;

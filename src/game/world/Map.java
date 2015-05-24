@@ -107,10 +107,11 @@ public class Map implements Serializable {
                 }
                 if (buffer.intersectsWith(buffer2)) {
                     i.intersectsWith(i2);
+                }
             }
         }
     }
-}
+
     /**
      * Doesn't clear the screen now
      */
@@ -150,6 +151,55 @@ public class Map implements Serializable {
         xPos = -(int) player.xPos;
         yPos = -(int) player.yPos;
     }
+
+    public Player getByID(long id) {
+        if (sprites.isEmpty()) {
+            return null;
+        }
+        Collections.sort(sprites, new PlayerSorter(id));
+        if (sprites.get(0) instanceof Player) {
+            if (((Player) sprites.get(0)).id == id) {
+                return (Player) sprites.get(0);
+            }
+        }
+        return null;
+    }
+    
+    public void loadSprites(){
+        if(sprites.isEmpty()){
+            return;
+        }
+        for(MapObject i:sprites){
+            i.loadSprite();
+        }
+    }
+}
+
+class PlayerSorter implements Comparator<MapObject> {
+
+    long id;
+
+    public PlayerSorter(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public int compare(MapObject o1, MapObject o2) {
+        Player buffer;
+        Player buffer2;
+        if (!(o1 instanceof Player)) {
+            return 243879082;
+        } else {
+            buffer = (Player) o1;
+        }
+        if (!(o2 instanceof Player)) {
+            return -3832704;
+        } else {
+            buffer2 = (Player) o2;
+        }
+
+        return (int) ((buffer.id - id) - (buffer2.id - id));
+    }
 }
 
 class MapObjectComparator implements Comparator<MapObject> {
@@ -158,5 +208,4 @@ class MapObjectComparator implements Comparator<MapObject> {
     public int compare(MapObject o1, MapObject o2) {
         return Math.round(o1.xPos - o2.xPos);
     }
-
 }

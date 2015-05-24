@@ -1,5 +1,6 @@
 package game.world.networking;
 
+import game.world.Map;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,6 +15,7 @@ public class Client implements Runnable {
     ObjectOutputStream out;
     ObjectInputStream in;
     Socket socket;
+    Map map;
 
     public Client(String ip, int port) throws IOException {
         socket = new Socket(ip, port);
@@ -32,7 +34,9 @@ public class Client implements Runnable {
         input = new LinkedList<Object>();
         start();
     }
-
+    public Map getMap(){
+        return map;
+    }
     public void start() {
         new Thread(this).start();
     }
@@ -54,20 +58,29 @@ public class Client implements Runnable {
         return null;
     }
 
+    public void sendMessage(Object object) throws IOException {
+        out.writeObject(object);
+        out.flush();
+    }
+
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    Object buffer = in.readObject();
-                    synchronized(inputLock){
+            try {
+                Object buffer = in.readObject();
+                if (buffer instanceof Map) {
+                    this.map = (Map) buffer;
+                } else {
+                    synchronized (inputLock) {
                         input.add(buffer);
                     }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    System.exit(0);
-                } catch (ClassNotFoundException ex) {
-                    ex.printStackTrace();
                 }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.exit(0);
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
