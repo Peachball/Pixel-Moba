@@ -1,9 +1,12 @@
 package game.world;
 
+import game.hitboxes.Hitbox;
+import game.world.bullets.Bullet;
 import game.world.champions.Player;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
@@ -71,6 +74,30 @@ public class Map implements Serializable {
         for (MapObject i : sprites) {
             i.update();
         }
+        Collections.sort(sprites, new MapObjectComparator());
+        for (MapObject i : sprites) {
+            Hitbox buffer;
+            Hitbox buffer2;
+            if (i instanceof Bullet) {
+                buffer = ((Bullet) i).hitbox;
+            } else if (i instanceof Player) {
+                buffer = ((Player) i).hitbox;
+            } else {
+                continue;
+            }
+            for (MapObject i2 : sprites) {
+                if (i instanceof Bullet) {
+                    buffer2 = ((Bullet) i).hitbox;
+                } else if (i instanceof Player) {
+                    buffer2 = ((Player) i).hitbox;
+                } else {
+                    continue;
+                }
+                if (buffer.intersectsWith(buffer2)) {
+                    i.intersectsWith(i2);
+                }
+            }
+        }
     }
 
     /**
@@ -83,7 +110,7 @@ public class Map implements Serializable {
         buffer.setPosition(xPos, yPos);
         frame.draw(buffer);
         for (int counter = 0; counter < sprites.size(); counter++) {
-            if (sprites.get(counter).remove) {
+            if (sprites.get(counter).remove) { 
                 sprites.remove(counter);
                 counter--;
                 continue;

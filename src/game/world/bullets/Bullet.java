@@ -6,21 +6,21 @@ import org.jsfml.graphics.Sprite;
 
 public abstract class Bullet extends MapObject {
 
-    Hitbox hitbox;
+    public Hitbox hitbox;
 
-    private void init(){
+    private void init() {
         display = true;
-        remove= false;
+        remove = false;
     }
+
     public Bullet(Sprite texture, int sizex, int sizey, float posx, float posy) {
         super(texture, sizex, sizey, posx, posy);
         init();
     }
-    public Bullet(){
+
+    public Bullet() {
         super();
         init();
     }
-    
-    
-    
+
 }
