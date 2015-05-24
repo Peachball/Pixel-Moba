@@ -18,5 +18,7 @@ public class main {
                 break;
             }
         }
+        window.close();
+        System.exit(0);
     }
 }

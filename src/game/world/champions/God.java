@@ -3,6 +3,8 @@ package game.world.champions;
 import game.screens.Frame;
 import game.world.bullets.BulletBill;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.window.Mouse;
@@ -64,19 +66,16 @@ public class God extends Player {
 
     @Override
     public void useW(int x, int y) {
-       if(System.currentTimeMillis() - cooldownW > 1000)
-       {
-           try
-           {
-               map.addSprite(new AOE(20, 20, (int) xPos, (int) yPos, this));
-           }
-           catch(IOException io)
-           {
-               io.printStackTrace();
-           }
-           cooldownW = System.currentTimeMillis();
+        if (System.currentTimeMillis() - cooldownW > 1000) {
+            try {
+                map.addSprite(new AOE(20, 20, (int) xPos, (int) yPos, this));
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
+            cooldownW = System.currentTimeMillis();
         }
     }
+
     @Override
     public void useE(int x, int y) {
         if (System.currentTimeMillis() - cooldownE > 15000) {
@@ -160,7 +159,7 @@ public class God extends Player {
         float tempx = this.xPos;
         float tempy = this.yPos;
         try {
-            God g = (God)this.clone();
+            God g = (God) this.clone();
             g.display = true;
             g.remove = false;
             D(this.xPos + 199, this.yPos + 199, g);
@@ -168,13 +167,25 @@ public class God extends Player {
             try {
                 Thread.sleep(1000);
                 g.display = false;
-            g.remove = true;
-            D(tempx, tempy, this);
+                g.remove = true;
+                D(tempx, tempy, this);
             } catch (InterruptedException ie) {
             }
-        }
-        catch (CloneNotSupportedException cnse) {}
+        } catch (CloneNotSupportedException cnse) {
         }
     }
 
+    @Override
+    public void loadSprite() {
+        Sprite a = new Sprite();
+        Texture buffer;
+        try {
+            buffer = Frame.loadImage(DEFAULT_IMAGE_PATH);
+            a.setTexture(buffer);
+            this.texture = a;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
+    }
+}

@@ -26,7 +26,6 @@ public class Map implements Serializable {
     public int yPos;
     RenderWindow frame;
     private Texture green;
-    private Text text;
 
     protected void init() throws IOException {
 
@@ -36,10 +35,6 @@ public class Map implements Serializable {
         sprites = new ArrayList<MapObject>();
         green = new Texture();
         green.loadFromStream(ClassLoader.getSystemResourceAsStream("res/healthbar.png"));
-        text = new Text();
-        Font font = new Font();
-        font.loadFromStream(ClassLoader.getSystemResourceAsStream("res/Time Roman.ttf"));
-        text.setFont(font);
     }
 
     public void linkWindow(RenderWindow window) {
@@ -119,7 +114,7 @@ public class Map implements Serializable {
     /**
      * Doesn't clear the screen now
      */
-    public void display() throws IOException {
+    public void display() {
         Sprite buffer = new Sprite();
         buffer.setTexture(background);
         buffer.setTextureRect(new IntRect(0, 0, sizex, sizey));
@@ -145,7 +140,6 @@ public class Map implements Serializable {
                 healthBar.setPosition(player.xPos - (float) (player.sizex / 2.0) + xPos, player.yPos - player.sizey + yPos);
                 healthBar.setTextureRect(new IntRect(0, 0, (int) (player.hp * 1.0 / player.maxhp * player.sizex), 5));
                 frame.draw(healthBar);
-                text.setString("GOD IS OP");
             }
             sprites.get(counter).texture.setPosition(sprites.get(counter).xPos + xPos, sprites.get(counter).yPos + yPos);
             frame.draw(sprites.get(counter).texture);
@@ -156,6 +150,55 @@ public class Map implements Serializable {
         xPos = -(int) player.xPos;
         yPos = -(int) player.yPos;
     }
+
+    public Player getByID(long id) {
+        if (sprites.isEmpty()) {
+            return null;
+        }
+        Collections.sort(sprites, new PlayerSorter(id));
+        if (sprites.get(0) instanceof Player) {
+            if (((Player) sprites.get(0)).id == id) {
+                return (Player) sprites.get(0);
+            }
+        }
+        return null;
+    }
+    
+    public void loadSprites(){
+        if(sprites.isEmpty()){
+            return;
+        }
+        for(MapObject i:sprites){
+            i.loadSprite();
+        }
+    }
+}
+
+class PlayerSorter implements Comparator<MapObject> {
+
+    long id;
+
+    public PlayerSorter(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public int compare(MapObject o1, MapObject o2) {
+        Player buffer;
+        Player buffer2;
+        if (!(o1 instanceof Player)) {
+            return 243879082;
+        } else {
+            buffer = (Player) o1;
+        }
+        if (!(o2 instanceof Player)) {
+            return -3832704;
+        } else {
+            buffer2 = (Player) o2;
+        }
+
+        return (int) ((buffer.id - id) - (buffer2.id - id));
+    }
 }
 
 class MapObjectComparator implements Comparator<MapObject> {
@@ -164,5 +207,4 @@ class MapObjectComparator implements Comparator<MapObject> {
     public int compare(MapObject o1, MapObject o2) {
         return Math.round(o1.xPos - o2.xPos);
     }
-
 }

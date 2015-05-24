@@ -27,7 +27,7 @@ public class AOE extends Bullet {
         
     }
     
-    public AOE(Sprite sprite, int sizex, int sizey, float xPos, float yPos){
+    public AOE(Sprite sprite, int sizex, int sizey, float xPos, float yPos) throws IOException{
         super(sprite, sizex, sizey, xPos, yPos);
         init();
     }
